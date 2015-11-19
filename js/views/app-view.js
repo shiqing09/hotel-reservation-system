@@ -10,8 +10,8 @@ var app = app || {};
 	$('.floor-nav').on('click', function(ev) {
 		$('.floor-nav').each(function(item) {
 			$(this).removeClass('active')
-			ev.currentTarget.className = ev.currentTarget.className + ' active'
 		})
+		ev.currentTarget.className = ev.currentTarget.className + ' active'
 		var floorCollection = new app.Rooms()
 		floorCollection.reset(app.rooms.where({floor: ev.currentTarget.value}))
 		var floorMapView = new app.FloorMapView({
@@ -72,10 +72,11 @@ var app = app || {};
 		makeReservation: function() {
 			this.searchResult.each(function(item){
 				item.set({'availability': false})
+				item.save({'availability': false})
 			})
 			$('#make-reservation-success').html('<p>Reservation made successfully.</p>')
 			$('#make-reservation-btn').addClass('hidden')
-			floorMapView.render()
+			$('.floor-nav[value='+this.searchResult[0].get('floor') + ']').trigger('click')
 		},
 		makeReservationSearch:function(ev) {
 			this.filteredCollection.reset(this.collection.where({roomType: this.ui.roomType.val(), availability: true}))
@@ -186,6 +187,8 @@ var app = app || {};
 				$('#cancel-reservation-success').removeClass('hidden')
 				$('#cancel-reservation-modal').modal()
 				thisRoom[0].set('availability', true)
+				thisRoom[0].save({'availability': true})
+				$('.floor-nav[value='+thisRoom[0].get('floor') + ']').trigger('click')
 			}
 		},
 		checkRoomAvailability: function() {

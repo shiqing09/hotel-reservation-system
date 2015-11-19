@@ -5,8 +5,6 @@ var app = app || {};
 	'use strict';
 
 	// Room Collection
-	// The collection of todos is backed by *localStorage* instead of a remote server.
-	console.log('hihi')
 	var roomsData = [{
 	"floor": 1,
 	"room": 1,
@@ -361,10 +359,14 @@ var app = app || {};
 ]
 
 
-	app.Rooms = Backbone.Collection.extend({
-		model: app.Room
-	});
-	// Create global collection
-	app.rooms = new app.Rooms(roomsData);
+app.Rooms = Backbone.Collection.extend({
+	model: app.Room,
+	localStorage: new Backbone.LocalStorage("rooms-collection")
+});
+// Create global collection
+app.rooms = new app.Rooms(roomsData);
+app.rooms.each(function(item) {
+	item.save()
+})
 
 })();
