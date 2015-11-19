@@ -40,6 +40,14 @@
   padding: 30px 25px;
 }
 
+#make-reservation-container-wrapper {
+  padding-left: 0px;
+}
+
+#manage-reservation-container-wrapper {
+  padding-right: 0px;
+}
+
 .manage-reservation-container {
 	margin-bottom: 20px;
 	border: 1px solid #ccc;

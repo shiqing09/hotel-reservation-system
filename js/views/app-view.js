@@ -49,6 +49,7 @@ var app = app || {};
 		initialize:function(){
 			this.searchResult = new app.Rooms()
 			this.maxCap = 0
+			this.filteredCollection = new app.Rooms()
 		},
 		triggerModalSuccess: function() {
 			$('#make-reservation-success').html('<p> Room Available: '+ this.searchResult.pluck('roomNumber') + '</p><p>Please Click OK to make reservation.</p>')
@@ -74,23 +75,22 @@ var app = app || {};
 			})
 			$('#make-reservation-success').html('<p>Reservation made successfully.</p>')
 			$('#make-reservation-btn').addClass('hidden')
+			floorMapView.render()
 		},
 		makeReservationSearch:function(ev) {
-			var filteredCollection = new app.Rooms()
-			filteredCollection.add(this.collection.where({roomType: this.ui.roomType.val(), availability: true}))
+			this.filteredCollection.reset(this.collection.where({roomType: this.ui.roomType.val(), availability: true}))
 			var partySizeLeft = this.ui.partySize.val()
 			this.maxCap = this.collection.where({roomType: this.ui.roomType.val()})[0].get('maxCap')
 			if (partySizeLeft <= this.maxCap) {
-				if (filteredCollection.models.length > 0) {
-					this.searchResult.add(filteredCollection.models[0])
+				if (this.filteredCollection.models.length > 0) {
+					this.searchResult.add(this.filteredCollection.models[0])
 					this.triggerModalSuccess()
 				}
 			} else {
-
-					if (filteredCollection.models.length > 0) {
-						var result = this.findAdjacent(filteredCollection, partySizeLeft)
-						while (!result && filteredCollection.models.length > 0) {
-								result = this.findAdjacent(filteredCollection, partySizeLeft)
+					if (this.filteredCollection.models.length > 0) {
+						var result = this.findAdjacent(this.filteredCollection, partySizeLeft)
+						while (!result && this.filteredCollection.models.length > 0) {
+								result = this.findAdjacent(this.filteredCollection, partySizeLeft)
 						}
 
 						if (result === false) {
@@ -105,12 +105,12 @@ var app = app || {};
 					} else {
 						this.triggerModalError()
 					}
-
 			}
 		},
 		searchDifferentFloor: function() {
-			filteredCollection.reset(this.collection.where({roomType: this.ui.roomType.val(), availability: true}))
-			result = this.findMultiple(filteredCollection, partySizeLeft)
+			var partySizeLeft = this.ui.partySize.val()
+			this.filteredCollection.reset(this.collection.where({roomType: this.ui.roomType.val(), availability: true}))
+			var result = this.findMultiple(this.filteredCollection, partySizeLeft)
 			if (result) {
 				this.triggerModalSuccess()
 			} else {
