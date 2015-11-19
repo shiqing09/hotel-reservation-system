@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en" data-framework="backbonejs">
+	<head>
+		<meta charset="utf-8">
+		<title>Hotel Reservation System</title>
+		<link rel="stylesheet" href="css/main.css">
+	</head>
+	<body>
+		<header class="bs-header">
+      <div class="container">
+        <h1>Hotel Reservation System</h1>
+        <p>Simple Marionette.js example application</p>
+      </div>
+    </header>
+    <div class="main-container">
+        <div class="col-xs-12 floor-map-container">
+            <div class="col-xs-2 floor-map-nav">
+                <ul class="nav nav-pills nav-stacked">
+                    <li id="first-floor" class="floor-nav active" role="presentation" value=1><a href="#">First Floor</a></li>
+                    <li id="second-floor" class="floor-nav" role="presentation" value=2><a href="#">Second Floor</a></li>
+                    <li id="third-floor" class="floor-nav" role="presentation" value=3><a href="#">Third Floor</a></li>
+                    <li id="forth-floor" class="floor-nav" role="presentation" value=4><a href="#">Forth Floor</a></li>
+                    <li id="fifth-floor" class="floor-nav" role="presentation" value=5><a href="#">Fifth Floor</a></li>
+                </ul>
+            </div>
+            <div class="col-xs-10">
+            	<div class="floor-map-content">
+            	</div>
+            </div>
+        </div>
+        <hr>
+        <div class="col-xs-6">
+        	<div class="make-reservation-container">
+        	</div>
+        </div>
+        <div class="col-xs-6">
+        	<div class="manage-reservation-container">
+        	</div>
+        </div>
+    </div>
+
+<div class="modal fade" id="cancel-reservation-modal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Cancel Reservation</h4>
+      </div>
+      <div class="modal-body" id="cancel-reservation-success">
+        <p>Reservation successfully cancelled.</p>
+      </div>
+      <div class="modal-body" id="cancel-reservation-error">
+        <p>Please check if you inpput a correct room number. Or this room is not reserved.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="check-room-availability-modal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Cancel Reservation</h4>
+      </div>
+      <div class="modal-body" id="check-room-availability-success">
+        <p>This room is available .</p>
+      </div>
+      <div class="modal-body" id="check-room-availability-error">
+        <p>Please check if you inpput a correct room number. Or this room is not available.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+		<script type="text/template" id="room-box-template">
+			<div class="{{roomType}} room-{{room}} availability-{{availability}}">
+				{{roomType}}<br>
+				{{roomNumber}}
+			</div>
+
+		</script>
+		<script type="text/template" id="manage-reservation-template">
+			<div class="input-group">
+				<div class="col-xs-4">
+					<input type="text" class="form-control" id="room-number-input" placeholder="Room Number"/>
+				</div>
+				<div class="col-xs-4">
+					<button type="button" class="btn btn-info" id="check-room-availability">Check Availability</button>
+				</div>
+				<div class="col-xs-4">
+					 <button type="button" class="btn btn-primary" id="cancel-reservation">Cancel Reservation</button>
+				</div>
+			</div>
+		</script>
+		<script type="text/template" id="make-reservation-template">
+			<div class="search-view">
+				<div class="col-xs-4">
+					  <input type="text" class="form-control" id="party-size" placeholder="Party Size"/>
+				</div>
+				<div class="col-xs-4">
+					  <select id="room-type" class="btn btn-default">
+						  <option value="studio">Studio</option>
+						  <option value="deluxe">Deluxe</option>
+						  <option value="executive">Executive</option>
+						</select>
+				</div>
+				<div class="col-xs-4">
+					<button type="button" class="btn btn-primary" id="make-reservation-search">Search</button>
+				</div>
+				<div class="modal fade" id="make-reservation-modal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Cancel Reservation</h4>
+      </div>
+      <div class="modal-body" id="make-reservation-success">
+      </div>
+      <div class="modal-body" id="make-reservation-error">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-default" id="make-reservation-btn">OK</button>
+        <button type="button" class="btn btn-default" id="search-different-floor-btn">Continue</button>
+      </div>
+    </div>
+  </div>
+</div>
+			</div>
+		</script>
+		<script src="node_modules/todomvc-common/base.js"></script>
+		<script src="node_modules/jquery/dist/jquery.js"></script>
+		<script src="node_modules/underscore/underscore.js"></script>
+		<script src="node_modules/backbone/backbone.js"></script>
+		<script src="node_modules/backbone.marionette/lib/backbone.marionette.js"></script>
+		<script src="node_modules/backbone.localstorage/backbone.localStorage.js"></script>
+		<script src="node_modules/handlebars/dist/handlebars.js"></script>
+		<script src="node_modules/bootstrap/dist/js/bootstrap.js"></script>
+    <link href="node_modules/bootstrap/dist/css/bootstrap.css" rel="stylesheet" type="text/css">
+		<script src="js/models/room.js"></script>
+		<script src="js/collections/rooms.js"></script>
+		<script src="js/views/todo-view.js"></script>
+		<script src="js/views/app-view.js"></script>
+		<script src="js/routers/router.js"></script>
+		<script src="js/app.js"></script>
+	</body>
+</html>

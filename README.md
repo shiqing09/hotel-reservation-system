@@ -1,2 +1,1 @@
-# hotel-reservation-system
-This is a hotel reservation system
+This is a simple Marionette.js application sample
