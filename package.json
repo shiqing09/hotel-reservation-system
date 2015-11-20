@@ -7,6 +7,13 @@
     "jquery": "^2.1.3",
     "bootstrap": "^3.3.5",
     "handlebars": "^3.0.3",
-    "underscore": "^1.7.0"
+    "underscore": "^1.7.0",
+    "karma": "0.12.31",
+    "karma-chrome-launcher": "0.1.4",
+    "karma-mocha": "0.1.10"
+  },
+  "devDependencies": {
+    "karma-requirejs": "^0.2.2",
+    "requirejs": "^2.1.21"
   }
 }
