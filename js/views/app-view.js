@@ -76,7 +76,7 @@ var app = app || {};
 			})
 			$('#make-reservation-success').html('<p>Reservation made successfully.</p>')
 			$('#make-reservation-btn').addClass('hidden')
-			$('.floor-nav[value='+this.searchResult[0].get('floor') + ']').trigger('click')
+			$('.floor-nav[value='+this.searchResult.models[0].get('floor') + ']').trigger('click')
 		},
 		makeReservationSearch:function(ev) {
 			this.filteredCollection.reset(this.collection.where({roomType: this.ui.roomType.val(), availability: true}))
